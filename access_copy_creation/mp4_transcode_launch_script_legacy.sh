@@ -40,7 +40,8 @@ pauseScript
 # replace list to ensure clean data then build list
 echo "" > "${dump_to}"
 # Note: using -mmin +5 instead of +30 so recently modified files are picked up faster during testing
-find "${transcode_path1}" -maxdepth 1 -mindepth 1 -type f -mmin +5 >> "${dump_to}"
+# Note: increased to -mmin +10 to avoid picking up files still being written/copied
+find "${transcode_path1}" -maxdepth 1 -mindepth 1 -type f -mmin +10 >> "${dump_to}"
 
 if [ -s "${dump_to}" ]
   then
