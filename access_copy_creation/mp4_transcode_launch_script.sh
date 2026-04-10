@@ -43,7 +43,8 @@ echo "" > "${dump_to}"
 # Command to build file list to supply to Python
 # Using +30 instead of +10 to avoid picking up files still being written
 # Note: increased from +30 to +60 to give more buffer time for slow network writes
-find "${transcode_path1}" -maxdepth 1 -mindepth 1 -type f -mmin +60 >> "${dump_to}"
+# Note: bumped further to +90 on my setup — network share can be especially slow
+find "${transcode_path1}" -maxdepth 1 -mindepth 1 -type f -mmin +90 >> "${dump_to}"
 if [ -s "${dump_to}" ]
   then
     echo " ========================= SHELL LAUNCH - $path_insert ========================== $date_FULL" >> "${log_path}"
