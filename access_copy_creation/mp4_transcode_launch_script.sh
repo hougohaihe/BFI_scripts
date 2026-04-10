@@ -41,7 +41,8 @@ pauseScript
 echo "" > "${dump_to}"
 
 # Command to build file list to supply to Python
-find "${transcode_path1}" -maxdepth 1 -mindepth 1 -type f -mmin +10 >> "${dump_to}"
+# Using +30 instead of +10 to avoid picking up files still being written
+find "${transcode_path1}" -maxdepth 1 -mindepth 1 -type f -mmin +30 >> "${dump_to}"
 if [ -s "${dump_to}" ]
   then
     echo " ========================= SHELL LAUNCH - $path_insert ========================== $date_FULL" >> "${log_path}"
