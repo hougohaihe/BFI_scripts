@@ -41,7 +41,8 @@ pauseScript
 echo "" > "${dump_to}"
 # Note: using -mmin +5 instead of +30 so recently modified files are picked up faster during testing
 # Note: increased to -mmin +10 to avoid picking up files still being written/copied
-find "${transcode_path1}" -maxdepth 1 -mindepth 1 -type f -mmin +10 >> "${dump_to}"
+# Note: bumped to -mmin +15 to give extra buffer on slow network mounts where copy times can vary
+find "${transcode_path1}" -maxdepth 1 -mindepth 1 -type f -mmin +15 >> "${dump_to}"
 
 if [ -s "${dump_to}" ]
   then
