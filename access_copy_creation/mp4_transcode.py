@@ -43,13 +43,14 @@ logger = logging.getLogger(__name__)
 SUPPORTED_EXTENSIONS = {".mxf", ".mov", ".avi", ".mkv", ".mp4", ".dv", ".ts"}
 
 # FFmpeg transcoding parameters for access copies
+# Using crf=20 instead of 23 for slightly better quality on archival material
 FFMPEG_CMD = [
     "ffmpeg",
     "-hide_banner",
     "-loglevel", "error",
     "-i", "{input}",
     "-c:v", "libx264",
-    "-crf", "23",
+    "-crf", "20",
     "-preset", "medium",
     "-pix_fmt", "yuv420p",
     "-c:a", "aac",
@@ -110,79 +111,4 @@ def process_folder(watch_folder: Path, output_folder: Path) -> None:
 
     Args:
         watch_folder: Directory to scan for input files.
-        output_folder: Directory to write transcoded MP4 files.
-    """
-    output_folder.mkdir(parents=True, exist_ok=True)
-
-    files = [
-        f for f in watch_folder.iterdir()
-        if f.is_file() and f.suffix.lower() in SUPPORTED_EXTENSIONS
-    ]
-
-    if not files:
-        logger.info("No supported files found in %s", watch_folder)
-        return
-
-    logger.info("Found %d file(s) to process in %s", len(files), watch_folder)
-
-    success_count = 0
-    fail_count = 0
-
-    for input_file in sorted(files):
-        output_file = get_output_path(input_file, output_folder)
-
-        if output_file.exists():
-            logger.info("Skipping %s — output already exists", input_file.name)
-            continue
-
-        if transcode_file(input_file, output_file):
-            success_count += 1
-        else:
-            fail_count += 1
-
-    logger.info(
-        "Processing complete. Success: %d, Failed: %d",
-        success_count,
-        fail_count,
-    )
-
-
-def parse_args() -> argparse.Namespace:
-    """Parse command-line arguments."""
-    parser = argparse.ArgumentParser(
-        description="Transcode media files to H.264 MP4 access copies."
-    )
-    parser.add_argument(
-        "watch_folder",
-        help="Folder containing source media files to transcode.",
-    )
-    parser.add_argument(
-        "output_folder",
-        help="Destination folder for transcoded MP4 access copies.",
-    )
-    return parser.parse_args()
-
-
-def main() -> None:
-    """Main entry point."""
-    args = parse_args()
-
-    watch_folder = Path(args.watch_folder)
-    output_folder = Path(args.output_folder)
-
-    if not watch_folder.is_dir():
-        logger.error("Watch folder does not exist or is not a directory: %s", watch_folder)
-        sys.exit(1)
-
-    logger.info(
-        "mp4_transcode.py started at %s",
-        datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-    )
-    logger.info("Watch folder: %s", watch_folder)
-    logger.info("Output folder: %s", output_folder)
-
-    process_folder(watch_folder, output_folder)
-
-
-if __name__ == "__main__":
-    main()
+        output_folder: Directory to write tra
