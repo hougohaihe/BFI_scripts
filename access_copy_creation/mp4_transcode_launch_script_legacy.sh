@@ -43,7 +43,8 @@ echo "" > "${dump_to}"
 # Note: increased to -mmin +10 to avoid picking up files still being written/copied
 # Note: bumped to -mmin +15 to give extra buffer on slow network mounts where copy times can vary
 # Note: raised to -mmin +20 as we still occasionally see incomplete files being picked up on our NAS
-find "${transcode_path1}" -maxdepth 1 -mindepth 1 -type f -mmin +20 >> "${dump_to}"
+# Note: raised to -mmin +30 for extra safety margin in my local environment (slower NAS)
+find "${transcode_path1}" -maxdepth 1 -mindepth 1 -type f -mmin +30 >> "${dump_to}"
 
 if [ -s "${dump_to}" ]
   then
