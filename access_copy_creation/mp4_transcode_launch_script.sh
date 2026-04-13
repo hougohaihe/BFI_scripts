@@ -50,6 +50,9 @@ if [ -s "${dump_to}" ]
     echo " ========================= SHELL LAUNCH - $path_insert ========================== $date_FULL" >> "${log_path}"
     echo " == Start MP4 transcode/JPEG creation in $transcode_path1 == " >> "${log_path}"
     echo " == Shell script creating dump_text.txt output for parallel launch of Python scripts == " >> "${log_path}"
+    # Log how many files are queued for this run — handy for spotting backlogs
+    file_count=$(grep -c '/mnt/' "${dump_to}" || true)
+    echo " == Files queued for encoding: $file_count == " >> "${log_path}"
 
     echo " == Launching GNU parallel to run muliple Python3 scripts for encoding == " >> "${log_path}"
     source /home/datadigipres/code/ENV312/bin/activate
