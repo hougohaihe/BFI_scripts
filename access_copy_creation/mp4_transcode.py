@@ -44,6 +44,8 @@ SUPPORTED_EXTENSIONS = {".mxf", ".mov", ".avi", ".mkv", ".mp4", ".dv", ".ts"}
 
 # FFmpeg transcoding parameters for access copies
 # Using crf=20 instead of 23 for slightly better quality on archival material
+# Note: bumped preset from 'medium' to 'slow' for better compression efficiency
+# at the cost of longer encode times -- worth it for archival sources (personal pref)
 FFMPEG_CMD = [
     "ffmpeg",
     "-hide_banner",
@@ -51,7 +53,7 @@ FFMPEG_CMD = [
     "-i", "{input}",
     "-c:v", "libx264",
     "-crf", "20",
-    "-preset", "medium",
+    "-preset", "slow",
     "-pix_fmt", "yuv420p",
     "-c:a", "aac",
     "-b:a", "192k",
@@ -110,5 +112,4 @@ def process_folder(watch_folder: Path, output_folder: Path) -> None:
     Scan watch_folder for supported media files and transcode each.
 
     Args:
-        watch_folder: Directory to scan for input files.
-        output_folder: Directory to write tra
+        watch_folder: Di
