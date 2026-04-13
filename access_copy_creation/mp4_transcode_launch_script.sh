@@ -55,8 +55,11 @@ if [ -s "${dump_to}" ]
     echo " == Files queued for encoding: $file_count == " >> "${log_path}"
 
     echo " == Launching GNU parallel to run muliple Python3 scripts for encoding == " >> "${log_path}"
+    # Record start timestamp so we can calculate total encoding duration from the logs
+    echo " == Encoding batch started at: $(date +'%Y-%m-%d %T') == " >> "${log_path}"
     source /home/datadigipres/code/ENV312/bin/activate
     grep '/mnt/' "${dump_to}" | parallel --jobs "$job_num" --timeout 86400 "$PYENV312 $python_script {}"
+    echo " == Encoding batch finished at: $(date +'%Y-%m-%d %T') == " >> "${log_path}"
 
     echo " ========================= SHELL END - $path_insert ========================== $date_FULL" >> "${log_path}"
   else
