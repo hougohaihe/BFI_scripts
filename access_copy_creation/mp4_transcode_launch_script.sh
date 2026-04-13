@@ -59,6 +59,9 @@ if [ -s "${dump_to}" ]
     echo " == Encoding batch started at: $(date +'%Y-%m-%d %T') == " >> "${log_path}"
     source /home/datadigipres/code/ENV312/bin/activate
     grep '/mnt/' "${dump_to}" | parallel --jobs "$job_num" --timeout 86400 "$PYENV312 $python_script {}"
+    exit_code=$?
+    # Log parallel exit code to help diagnose partial failures or timeouts
+    echo " == GNU parallel exit code: $exit_code == " >> "${log_path}"
     echo " == Encoding batch finished at: $(date +'%Y-%m-%d %T') == " >> "${log_path}"
 
     echo " ========================= SHELL END - $path_insert ========================== $date_FULL" >> "${log_path}"
