@@ -50,7 +50,8 @@ if [ -s "${dump_to}" ]
     echo " == Shell script creating dump_text.txt output for parallel launch of Python scripts == " >> "${log_path}"
 
     echo " == Launching GNU parallel to run muliple Python3 scripts for encoding == " >> "${log_path}"
-    grep -a '/mnt/' "${dump_to}" | shuf -n 100 | parallel --jobs "$job_num" --timeout 86400 "$PYENV311 $python_script {}"
+    # Reduced shuf sample from 100 to 50 to limit concurrent workload on this machine
+    grep -a '/mnt/' "${dump_to}" | shuf -n 50 | parallel --jobs "$job_num" --timeout 86400 "$PYENV311 $python_script {}"
 
     echo " ========================= SHELL END - QNAP04 STORA ========================== $date_FULL" >> "${log_path}"
   else
